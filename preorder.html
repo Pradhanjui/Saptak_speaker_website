@@ -3,194 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login | SimpleSpeaker</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-
-    body {
-      background-color: #f8f9fa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-
-    .login-container {
-      background: #fff;
-      padding: 2.5rem;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
-
-    .login-container h2 {
-      margin-bottom: 1.5rem;
-      font-size: 24px;
-      color: #111;
-    }
-
-    .form-group {
-      text-align: left;
-      margin-bottom: 1rem;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 0.25rem;
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
-
-    .password-toggle {
-      position: relative;
-    }
-
-    .password-toggle input {
-      padding-right: 40px;
-    }
-
-    .toggle-visibility {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      font-size: 14px;
-      color: #555;
-    }
-
-    .remember-me {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      margin-bottom: 1.5rem;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #111;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .divider {
-      display: flex;
-      align-items: center;
-      margin: 1.5rem 0;
-    }
-
-    .divider::before,
-    .divider::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background-color: #ccc;
-    }
-
-    .divider span {
-      margin: 0 10px;
-      font-size: 12px;
-      color: #888;
-    }
-
-    .social-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .social-buttons button {
-      background: #fff;
-      color: #333;
-      border: 1px solid #ccc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: 500;
-    }
-
-    .signup-link {
-      margin-top: 1rem;
-      font-size: 14px;
-    }
-
-    .signup-link a {
-      text-decoration: none;
-      color: #007bff;
-      font-weight: 600;
-    }
-
-    @media (max-width: 500px) {
-      .login-container {
-        padding: 2rem 1.5rem;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="login-container">
-    <h2>Welcome back</h2>
-    <form id="login-form">
-      <div class="form-group">
-        <label for="email">Email address</label>
-        <input type="email" id="email" required />
-      </div>
-
-      <div class="form-group password-toggle">
-        <label for="password">Password</label>
-        <input type="password" id="password" required />
-        <span class="toggle-visibility" onclick="togglePassword()">Show</span>
-      </div>
-
-      <div class="remember-me">
-        <input type="checkbox" id="rememberMe" />
-        <label for="rememberMe">Remember me</label>
-      </div>
-
-      <button type="submit">Login</button>
-    </form>
-
-    <p class="signup-link">
-      Don’t have an account? <a href="signup.html">Sign up</a>
-    </p>
-
-    <div class="divider"><span>OR</span></div>
-
-    <div class="social-buttons">
-      <button disabled>📞 Continue with phone</button>
-      <button disabled>🔵 Continue with Google</button>
-    </div>
-  </div>
-
-  <!-- Firebase App (Core SDK) -->
+  <title>Preorder | SimpleSpeaker</title>
+  <link rel="stylesheet" href="styles.css" />
   <script type="module">
-    // Import Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCOtAZD3V5oxR5hOKos9nc2ZXy76PTwNl8",
@@ -205,35 +22,82 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth();
 
-    document.getElementById('login-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
-
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Redirect to dashboard
-          window.location.href = 'dashboard.html';
-        })
-        .catch((error) => {
-          alert("Login failed: " + error.message);
-        });
-    });
-
-    // Show/Hide password
-    window.togglePassword = function () {
-      const passwordInput = document.getElementById('password');
-      const toggleBtn = document.querySelector('.toggle-visibility');
-      if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        toggleBtn.innerText = 'Hide';
-      } else {
-        passwordInput.type = 'password';
-        toggleBtn.innerText = 'Show';
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "login.html"; // Redirect if not logged in
       }
-    };
+    });
   </script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f4f4;
+      padding: 2rem;
+    }
+
+    .form-section {
+      max-width: 500px;
+      background: #fff;
+      margin: 50px auto;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-section h1 {
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: #a3472d;
+    }
+
+    form input,
+    form textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    form textarea {
+      height: 100px;
+      resize: vertical;
+    }
+
+    form button {
+      width: 100%;
+      padding: 12px;
+      background-color: #a3472d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    form button:hover {
+      background-color: #8f3c24;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Preorder Form Section -->
+  <section class="form-section">
+    <h1>Preorder Your Simple Speaker</h1>
+    <form action="https://formsubmit.co/YOUR_EMAIL_HERE" method="POST">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <input type="number" name="quantity" placeholder="Quantity" required />
+      <input type="text" name="address" placeholder="Shipping Address" required />
+      <textarea name="message" placeholder="Any special request or message..."></textarea>
+      <button type="submit">Place Preorder</button>
+    </form>
+  </section>
 
 </body>
 </html>
