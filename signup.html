@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - Speaker Website</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #a3472d, #333);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .signup-container {
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 2rem;
+      background-color: #1c1c1c;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .signup-container h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #2e2e2e;
+      color: white;
+    }
+
+    .password-toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #e64a19;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #d84315;
+    }
+
+    .social-login {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .social-login button {
+      background-color: #444;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .login-link a {
+      color: #ffccbc;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="signup-container">
+    <h2>Create Your Account</h2>
+    <form id="signupForm">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" required />
+
+      <label for="password">Password</label>
+      <div class="password-toggle">
+        <input type="password" id="password" required />
+        <button type="button" onclick="togglePassword()">Show</button>
+      </div>
+
+      <button type="submit">Sign Up</button>
+    </form>
+
+    <div class="social-login">
+      <button disabled>Sign Up with Google (Coming Soon)</button>
+      <button disabled>Sign Up with Phone Number (Coming Soon)</button>
+    </div>
+
+    <div class="login-link">
+      Already have an account? <a href="login.html">Login</a>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOtAZD3V5oxR5hOKos9nc2ZXy76PTwNl8",
+      authDomain: "simplespeakerauth.firebaseapp.com",
+      projectId: "simplespeakerauth",
+      storageBucket: "simplespeakerauth.firebasestorage.app",
+      messagingSenderId: "419602101455",
+      appId: "1:419602101455:web:662a896a2fca27930d33ba",
+      measurementId: "G-D8KWJDF10J"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert("Signup successful!");
+        window.location.href = "dashboard.html";
+      } catch (error) {
+        alert("Signup failed: " + error.message);
+      }
+    });
+
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+    }
+  </script>
+</body>
+</html>

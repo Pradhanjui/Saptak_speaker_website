@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Simple Speaker</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f6f6f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background: #a3472d;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .navbar nav a {
+      margin-left: 1rem;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .dashboard-container {
+      max-width: 600px;
+      margin: 3rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2, h3 {
+      color: #a3472d;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      margin-top: 1rem;
+      background-color: #a3472d;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #8d3a21;
+    }
+
+    #updateMsg {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: green;
+    }
+
+    @media (max-width: 600px) {
+      .dashboard-container {
+        margin: 1rem;
+        padding: 1rem;
+      }
+
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .navbar nav a {
+        margin: 0.3rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">Simple</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="preorder.html">Preorder</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </nav>
+  </header>
+
+  <div class="dashboard-container">
+    <h2>Welcome, <span id="displayName">User</span></h2>
+    <p><strong>Email:</strong> <span id="userEmail"></span></p>
+
+    <hr>
+
+    <h3>Edit Profile</h3>
+    <label for="newName">New Display Name</label>
+    <input type="text" id="newName" placeholder="Enter new name" />
+    <button id="updateBtn">Save Changes</button>
+    <p id="updateMsg"></p>
+  </div>
+
+  <!-- Firebase Modular SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOtAZD3V5oxR5hOKos9nc2ZXy76PTwNl8",
+      authDomain: "simplespeakerauth.firebaseapp.com",
+      projectId: "simplespeakerauth",
+      storageBucket: "simplespeakerauth.firebasestorage.app",
+      messagingSenderId: "419602101455",
+      appId: "1:419602101455:web:662a896a2fca27930d33ba",
+      measurementId: "G-D8KWJDF10J"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const displayNameEl = document.getElementById("displayName");
+    const userEmailEl = document.getElementById("userEmail");
+    const updateBtn = document.getElementById("updateBtn");
+    const updateMsg = document.getElementById("updateMsg");
+
+    let currentUser = null;
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        currentUser = user;
+        displayNameEl.textContent = user.displayName || "User";
+        userEmailEl.textContent = user.email;
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    updateBtn.addEventListener("click", () => {
+      const newName = document.getElementById("newName").value.trim();
+      if (!newName) {
+        updateMsg.textContent = "Please enter a name.";
+        return;
+      }
+
+      updateProfile(currentUser, {
+        displayName: newName
+      }).then(() => {
+        updateMsg.textContent = "Profile updated successfully!";
+        displayNameEl.textContent = newName;
+        document.getElementById("newName").value = "";
+      }).catch(error => {
+        updateMsg.textContent = "Error: " + error.message;
+      });
+    });
+
+    window.logout = function () {
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      });
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | SimpleSpeaker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: #fff;
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-container h2 {
+      margin-bottom: 1.5rem;
+      font-size: 24px;
+      color: #111;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .password-toggle {
+      position: relative;
+    }
+
+    .password-toggle input {
+      padding-right: 40px;
+    }
+
+    .toggle-visibility {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      margin-bottom: 1.5rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #111;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 1.5rem 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background-color: #ccc;
+    }
+
+    .divider span {
+      margin: 0 10px;
+      font-size: 12px;
+      color: #888;
+    }
+
+    .social-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .social-buttons button {
+      background: #fff;
+      color: #333;
+      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 500;
+    }
+
+    .signup-link {
+      margin-top: 1rem;
+      font-size: 14px;
+    }
+
+    .signup-link a {
+      text-decoration: none;
+      color: #007bff;
+      font-weight: 600;
+    }
+
+    @media (max-width: 500px) {
+      .login-container {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h2>Welcome back</h2>
+    <form id="login-form">
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" id="email" required />
+      </div>
+
+      <div class="form-group password-toggle">
+        <label for="password">Password</label>
+        <input type="password" id="password" required />
+        <span class="toggle-visibility" onclick="togglePassword()">Show</span>
+      </div>
+
+      <div class="remember-me">
+        <input type="checkbox" id="rememberMe" />
+        <label for="rememberMe">Remember me</label>
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <p class="signup-link">
+      Don’t have an account? <a href="signup.html">Sign up</a>
+    </p>
+
+    <div class="divider"><span>OR</span></div>
+
+    <div class="social-buttons">
+      <button disabled>📞 Continue with phone</button>
+      <button disabled>🔵 Continue with Google</button>
+    </div>
+  </div>
+
+  <!-- Firebase App (Core SDK) -->
+  <script type="module">
+    // Import Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOtAZD3V5oxR5hOKos9nc2ZXy76PTwNl8",
+      authDomain: "simplespeakerauth.firebaseapp.com",
+      projectId: "simplespeakerauth",
+      storageBucket: "simplespeakerauth.firebasestorage.app",
+      messagingSenderId: "419602101455",
+      appId: "1:419602101455:web:662a896a2fca27930d33ba",
+      measurementId: "G-D8KWJDF10J"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+
+    document.getElementById('login-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Redirect to dashboard
+          window.location.href = 'dashboard.html';
+        })
+        .catch((error) => {
+          alert("Login failed: " + error.message);
+        });
+    });
+
+    // Show/Hide password
+    window.togglePassword = function () {
+      const passwordInput = document.getElementById('password');
+      const toggleBtn = document.querySelector('.toggle-visibility');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleBtn.innerText = 'Hide';
+      } else {
+        passwordInput.type = 'password';
+        toggleBtn.innerText = 'Show';
+      }
+    };
+  </script>
+
+</body>
+</html>
