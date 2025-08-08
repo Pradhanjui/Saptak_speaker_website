@@ -84,7 +84,7 @@
   </style>
 </head>
 <body>
-   <header class="navbar">
+  <header class="navbar">
     <div class="logo">Saptak</div>
     <nav>
       <a href="index.html">Home</a>
@@ -92,30 +92,27 @@
       <a href="preorder.html">Preorder</a>
       <a href="login.html">Login</a>
     </nav>
-   </header>
+  </header>
+
   <!-- Preorder Form Section -->
   <section class="form-section">
     <h1>Preorder Your Saptak Speaker</h1>
-    <form action="https://formsubmit.co/juipradhan31@gmail.com" method="POST">
-     <input type="hidden" name="_captcha" value="false">
-     <input type="hidden" name="_next" value="thankyou.html">
-     <input type="text" name="name" placeholder="Your Name" required />
-     <input type="email" name="email" placeholder="Your Email" required />
-     <input type="number" name="quantity" placeholder="Quantity" required />
-     <input type="text" name="address" placeholder="Shipping Address" required />
-     <textarea name="message" placeholder="Any special request or message..."></textarea>
-     <button type="submit">Place Preorder</button>
+
+    <!-- IMPORTANT: Replace YOUR_UNIQUE_TOKEN with your FormSubmit token -->
+    <form action="https://formsubmit.co/YOUR_UNIQUE_TOKEN" method="POST">
+      <!-- FormSubmit settings -->
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="thankyou.html">
+      <input type="hidden" name="_method" value="POST">
+
+      <!-- Form fields -->
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <input type="number" name="quantity" placeholder="Quantity" required />
+      <input type="text" name="address" placeholder="Shipping Address" required />
+      <textarea name="message" placeholder="Any special request or message..."></textarea>
+      <button type="submit">Place Preorder</button>
     </form>
-
-
   </section>
-
 </body>
 </html>
-
-
-
-
-
-
-
